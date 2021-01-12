@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="com.core.obj.FileSystemObject" table="file_system_objects">
+    <meta attribute="class-description">
+            This class contains the Media file detail. 
+        </meta>
+    <id column="id" name="id" type="long">
+      <generator class="sequence"/>
+    </id>
+    <many-to-one class="com.core.obj.FileSystemObject" column="parent_id" name="parent"/>
+    <property column="name" name="name" type="string"/>
+    <property column="path" name="location" type="string"/>
+    <property column="object_type" name="objectType" type="int"/>
+  </class>
+  <class name="com.core.obj.Directory" table="file_system_objects">
+    <meta attribute="class-description">
+            This class contains the Media file detail. 
+        </meta>
+    <id column="id" name="id" type="long">
+      <generator class="native"/>
+    </id>
+    <many-to-one class="com.core.obj.FileSystemObject" column="parent_id" name="parent"/>
+    <property column="name" name="name" type="string"/>
+    <property column="path" name="location" type="string"/>
+    <property column="object_type" name="objectType" type="int"/>
+  </class>
+  <class name="com.core.obj.File" table="file_system_objects">
+    <meta attribute="class-description">
+            This class contains the Media file detail. 
+        </meta>
+    <id column="id" name="id" type="long">
+      <generator class="native"/>
+    </id>
+    <many-to-one class="com.core.obj.FileSystemObject" column="parent_id" name="parent"/>
+    <property column="name" name="name" type="string"/>
+    <property column="path" name="location" type="string"/>
+    <property column="object_type" name="objectType" type="int"/>
+  </class>
+</hibernate-mapping>

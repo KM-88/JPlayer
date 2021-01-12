@@ -1,0 +1,50 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<util:list id="CLI_OPTIONS" list-class="java.util.ArrayList"
+		value-type="framew.cmd.Option">
+		<ref bean="list" />
+		<ref bean="play" />
+		<ref bean="cd" />
+	</util:list>
+
+	<bean id="fileLogger" class="framew.log.FileLogger">
+		<constructor-arg name="outputFileName"
+			value="cmd-cli-output.log" />
+		<constructor-arg name="errorFileName"
+			value="cmd-cli-error.log" />
+		<constructor-arg name="debugFileName"
+			value="cmd-cli-debug.log" />
+		<constructor-arg name="defaultLogLevel" value="6" />
+	</bean>
+	<alias name="fileLogger" alias="logger" />
+	<bean id="list" class="framew.cmd.Option">
+		<constructor-arg name="name" value="l" />
+		<constructor-arg name="longName" value="ls" />
+		<constructor-arg name="no_of_args" value="1" />
+		<constructor-arg name="isOptional" value="true" />
+		<constructor-arg name="isDynamic" value="true" />
+	</bean>
+	<bean id="play" class="framew.cmd.Option">
+		<constructor-arg name="name" value="p" />
+		<constructor-arg name="longName" value="play" />
+		<constructor-arg name="no_of_args" value="1" />
+		<constructor-arg name="isOptional" value="true" />
+		<constructor-arg name="isDynamic" value="true" />
+	</bean>
+
+	<bean id="cd" class="framew.cmd.Option">
+		<constructor-arg name="name" value="c" />
+		<constructor-arg name="longName" value="cd" />
+		<constructor-arg name="no_of_args" value="1" />
+		<constructor-arg name="isOptional" value="true" />
+		<constructor-arg name="isDynamic" value="false" />
+	</bean>
+
+</beans>

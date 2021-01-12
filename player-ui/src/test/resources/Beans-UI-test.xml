@@ -1,0 +1,271 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+	<util:list id="CLI_OPTIONS" list-class="java.util.ArrayList"
+		value-type="framew.cmd.Option">
+		<ref bean="list" />
+		<ref bean="play" />
+		<ref bean="cd" />
+		<ref bean="pwd" />
+	</util:list>
+
+	<bean id="list" class="framew.cmd.Option">
+		<constructor-arg name="name" value="l" />
+		<constructor-arg name="cmd" ref="listcmd" />
+		<constructor-arg name="longName" value="ls" />
+		<constructor-arg name="no_of_args" value="1" />
+		<constructor-arg name="isOptional" value="true" />
+		<constructor-arg name="isDynamic" value="true" />
+	</bean>
+	<bean id="listcmd" class="task.cli.options.ListOptionCommand">
+		<constructor-arg name="name" value="listcmd" />
+	</bean>
+
+	<bean id="cdcmd" class="task.cli.options.CDOptionCommand">
+		<constructor-arg name="name" value="listcmd" />
+	</bean>
+
+	<bean id="playcmd" class="task.cli.options.PlayOptionCommand">
+		<constructor-arg name="name" value="listcmd" />
+	</bean>
+
+	<bean id="pwdcmd" class="task.cli.options.PWDOptionCommand">
+		<constructor-arg name="name" value="listcmd" />
+	</bean>
+
+	<bean id="pwd" class="framew.cmd.Option">
+		<constructor-arg name="name" value="w" />
+		<constructor-arg name="cmd" ref="pwdcmd" />
+		<constructor-arg name="longName" value="pwd" />
+		<constructor-arg name="no_of_args" value="1" />
+		<constructor-arg name="isOptional" value="true" />
+		<constructor-arg name="isDynamic" value="false" />
+	</bean>
+
+	<bean id="play" class="framew.cmd.Option">
+		<constructor-arg name="name" value="p" />
+		<constructor-arg name="cmd" ref="playcmd" />
+		<constructor-arg name="longName" value="play" />
+		<constructor-arg name="no_of_args" value="1" />
+		<constructor-arg name="isOptional" value="true" />
+		<constructor-arg name="isDynamic" value="true" />
+	</bean>
+
+	<bean id="cd" class="framew.cmd.Option">
+		<constructor-arg name="name" value="c" />
+		<constructor-arg name="cmd" ref="cdcmd" />
+		<constructor-arg name="longName" value="cd" />
+		<constructor-arg name="no_of_args" value="1" />
+		<constructor-arg name="isOptional" value="true" />
+		<constructor-arg name="isDynamic" value="false" />
+	</bean>
+	<bean name="libraryManager"
+		class="framew.api.impl.LibraryManagerImpl" />
+
+	<bean name="LocalMusicFileSystemScanner"
+		class="lib.impl.LocalMusicFileSystemScannerImpl" />
+
+	<bean name="defaultViewComponent"
+		class="hob.compo.ui.FolderViewComponent">
+	</bean>
+	<bean name="playListPanel" class="hob.compo.ui.PlayListPanel">
+	</bean>
+	<bean name="visualizationPanel" class="ui.VisualizationPanel">
+		<constructor-arg name="width" value="300" />
+		<constructor-arg name="height" value="400" />
+		<constructor-arg name="imageBuffer">
+			<ref bean="bufferedImage" />
+		</constructor-arg>
+	</bean>
+	<bean name="visualizationNonDaemonThread"
+		class="ui.VisualizationNonDaemonThread">
+		<constructor-arg name="name"
+			value="visualizationPanel" />
+		<constructor-arg name="visualizationPanel">
+			<ref bean="visualizationPanel" />
+		</constructor-arg>
+		<constructor-arg name="imageBuffer">
+			<ref bean="bufferedImage" />
+		</constructor-arg>
+	</bean>
+	<util:map id="VISUALIZATION_SERVICE"
+		map-class="java.util.HashMap" key-type="java.lang.String"
+		value-type="java.lang.Object">
+		<entry key="defaultViewComponent">
+			<ref bean="defaultViewComponent" />
+		</entry>
+		<entry key="bufferedImage">
+			<ref bean="bufferedImage" />
+		</entry>
+		<entry key="playListPanel">
+			<ref bean="playListPanel" />
+		</entry>
+		<entry key="playListPanel">
+			<ref bean="playListPanel" />
+		</entry>
+		<entry key="playListPanel">
+			<ref bean="playListPanel" />
+		</entry>
+	</util:map>
+
+	<bean name="mainUINonDaemonThread"
+		class="ui.MainUINonDaemonThread">
+		<constructor-arg name="name"
+			value="mainUINonDaemonThread" />
+	</bean>
+	<bean name="periodicEventMessageGenerationThread"
+		class="framew.threads.threadgen.PeriodicEventMessageGenerationThread">
+		<constructor-arg name="name"
+			value="periodicEventMessageGenerationThread" />
+	</bean>
+
+	<bean name="eventMessageExecutionerDaemonThread"
+		class="framew.threads.threadgen.EventMessageExecutionerDaemonThread">
+		<constructor-arg name="name"
+			value="periodicEventMessageGenerationThread" />
+	</bean>
+
+	<bean name="nativeCacheCLINonDaemonThread"
+		class="task.cli.NativeCacheCLINonDaemonThread">
+		<constructor-arg name="name"
+			value="periodicEventMessageGenerationThread" />
+	</bean>
+	<util:map id="threadMap" map-class="java.util.HashMap"
+		key-type="java.lang.String"
+		value-type="framew.threads.api.ReferenceThread">
+		<entry key="periodicEventMessageGenerationThread">
+			<ref bean="periodicEventMessageGenerationThread" />
+		</entry>
+		<entry key="eventMessageExecutionerDaemonThread">
+			<ref bean="eventMessageExecutionerDaemonThread" />
+		</entry>
+		<entry key="nativeCacheCLINonDaemonThread">
+			<ref bean="nativeCacheCLINonDaemonThread" />
+		</entry>
+		<entry key="visualizationNonDaemonThread">
+			<ref bean="visualizationNonDaemonThread" />
+		</entry>
+		<entry key="mainUINonDaemonThread">
+			<ref bean="mainUINonDaemonThread" />
+		</entry>
+	</util:map>
+
+	<util:map id="threadStartupTimestamp"
+		map-class="java.util.HashMap" key-type="java.lang.String"
+		value-type="java.lang.Integer">
+		<entry key="periodicEventMessageGenerationThread" value="0" />
+		<entry key="eventMessageExecutionerDaemonThread" value="0" />
+		<entry key="nativeCacheCLINonDaemonThread" value="0" />
+		<entry key="visualizationNonDaemonThread" value="0" />
+		<entry key="mainUINonDaemonThread" value="1000" />
+	</util:map>
+
+	<bean name="cacheExecutionEvent" class="app.EventMessage">
+		<constructor-arg name="message"
+			value="CACHE_EXECUTION_EVENT" />
+	</bean>
+
+	<bean name="libraryExecutionEvent" class="app.EventMessage">
+		<constructor-arg name="message"
+			value="LIBRARY_EXECUTION_EVENT" />
+	</bean>
+
+	<bean name="periodicViewUpdateExecutionEvent"
+		class="app.EventMessage">
+		<constructor-arg name="message"
+			value="PERIODIC_VIEW_UPDATE_EXECUTION_EVENT" />
+	</bean>
+
+	<util:map id="eventMessageMap" map-class="java.util.HashMap"
+		key-type="java.lang.String" value-type="app.EventMessage">
+		<entry key="CACHE_EXECUTION_EVENT" value="cacheExecutionEvent" />
+		<entry key="LIBRARY_EXECUTION_EVENT"
+			value="libraryExecutionEvent" />
+		<entry key="PERIODIC_VIEW_UPDATE_EXECUTION_EVENT"
+			value="periodicViewUpdateExecutionEvent" />
+	</util:map>
+
+	<bean name="cacheExecutionTask" class="task.CacheExecutionTask">
+		<constructor-arg name="name"
+			value="CacheExecutionTask" />
+		<constructor-arg name="event"
+			value="cacheExecutionEvent" />
+		<constructor-arg name="refreshInterval" value="60000" />
+	</bean>
+
+	<bean name="libraryExecutionTask"
+		class="task.LibraryExecutionTask">
+		<constructor-arg name="name"
+			value="LibraryExecutionTask" />
+		<constructor-arg name="event"
+			value="libraryExecutionEvent" />
+		<constructor-arg name="refreshInterval" value="60000" />
+
+	</bean>
+
+	<bean name="periodicViewUpdateExecutionTask"
+		class="hob.compo.engine.PeriodicViewUpdateExecutionTask">
+		<constructor-arg name="name"
+			value="PeriodicViewUpdateExecutionTask" />
+		<constructor-arg name="event"
+			value="periodicViewUpdateExecutionEvent" />
+		<constructor-arg name="refreshInterval" value="90000" />
+	</bean>
+
+	<util:list id="taskInventory"
+		list-class="java.util.ArrayList" value-type="app.ExecutionTask">
+		<ref bean="cacheExecutionTask" />
+		<ref bean="libraryExecutionTask" />
+		<ref bean="periodicViewUpdateExecutionTask" />
+	</util:list>
+
+	<bean id="fileLogger" class="framew.log.FileLogger">
+		<constructor-arg name="outputFileName"
+			value="output-test.log" />
+		<constructor-arg name="errorFileName"
+			value="error-test.log" />
+		<constructor-arg name="debugFileName"
+			value="debug-test.log" />
+		<constructor-arg name="defaultLogLevel" value="6" />
+	</bean>
+	<alias name="fileLogger" alias="logger" />
+	<bean id="consoleLogger" class="framew.log.ConsoleLogger">
+		<constructor-arg name="output">
+			<util:constant static-field="java.lang.System.out" />
+		</constructor-arg>
+		<constructor-arg name="error">
+			<util:constant static-field="java.lang.System.err" />
+		</constructor-arg>
+		<constructor-arg name="debug">
+			<util:constant static-field="java.lang.System.out" />
+		</constructor-arg>
+	</bean>
+	<bean id="logFileOption" class="framew.cmd.Option">
+		<constructor-arg name="name" value="g" />
+		<constructor-arg name="longName" value="log" />
+		<constructor-arg name="no_of_args" value="1" />
+		<constructor-arg name="isOptional" value="true" />
+		<constructor-arg name="isDynamic" value="false" />
+	</bean>
+	<bean id="libDirOption" class="framew.cmd.Option">
+		<constructor-arg name="name" value="l" />
+		<constructor-arg name="longName" value="lib" />
+		<constructor-arg name="no_of_args" value="1" />
+		<constructor-arg name="isOptional" value="true" />
+		<constructor-arg name="isDynamic" value="true" />
+	</bean>
+
+	<bean id="bufferedImage" class="java.awt.image.BufferedImage">
+		<constructor-arg name="width" value="300" />
+		<constructor-arg name="height" value="400" />
+		<constructor-arg name="imageType">
+			<util:constant
+				static-field="java.awt.image.BufferedImage.TYPE_INT_ARGB" />
+		</constructor-arg>
+	</bean>
+</beans>

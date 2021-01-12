@@ -1,0 +1,6 @@
+.scannerwork/*
+.settings/*
+common-systems/.settings/*
+javazoom-api/.settings/*
+player-framework/.settings/*
+player-ui/.settings/*
